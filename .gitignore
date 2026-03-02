@@ -1,0 +1,56 @@
+############################################
+# Visual Studio cache
+############################################
+.vs/
+*.VC.db
+*.VC.opendb
+*.suo
+
+############################################
+# Build output folders (폴더 단위 제거)
+############################################
+/DX12GraduationProject/Engine/x64/
+/DX12GraduationProject/Engine/Debug/
+/DX12GraduationProject/Engine/Release/
+
+/DX12GraduationProject/Game/x64/
+/DX12GraduationProject/Game/Debug/
+/DX12GraduationProject/Game/Release/
+
+/DX12GraduationProject/Tools/x64/
+/DX12GraduationProject/Tools/Debug/
+/DX12GraduationProject/Tools/Release/
+
+############################################
+# CMake (사용 시)
+############################################
+CMakeFiles/
+CMakeCache.txt
+cmake-build-*/
+
+############################################
+# Linker / Debug intermediates (안전)
+############################################
+*.pdb
+*.ilk
+*.exp
+*.idb
+*.tlog
+*.lastbuildstate
+
+############################################
+# Shader compiled output (바이너리만)
+############################################
+*.cso
+*.dxil
+
+############################################
+# Executables
+############################################
+*.exe
+
+############################################
+# OS junk
+############################################
+Thumbs.db
+.DS_Store

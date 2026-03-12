@@ -1,0 +1,186 @@
+모든 기획 문서와 현재 프로젝트 상태를 파악했습니다. 아래는 기획 내용을 종합한 프로젝트 구조 추천입니다.
+
+  ---
+  기획 문서 요약
+  ┌──────────────┬─────────────────────────────────────────────────────────────────────────────────────────────┐
+  │     문서     │                                          핵심 내용                                          │
+  ├──────────────┼─────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ temp.md      │ PBR lite 렌더링, 실외↔실내 전환 연출, 버려진 연구시설 세계관, 스프라이트 몹, Megascans      │
+  │              │ 에셋                                                                                        │
+  ├──────────────┼─────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ 멀쓰+엔진.md │ Job System + Worker Thread Pool 기반 멀티쓰레딩, 전용 Audio/Resource/Network 스레드         │
+  ├──────────────┼─────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ 중점과제.md  │ Path Tracing 기반 의도적 노이즈 분포, Multi-pass 렌더링, Blue Noise, Post Processing        │
+  └──────────────┴─────────────────────────────────────────────────────────────────────────────────────────────┘
+  ---
+  추천 프로젝트 구조
+
+  DX12GraduationProject/
+  ├─ DX12GraduationProject.sln
+  │
+  ├─ Engine/                          (Static Library)
+  │   ├─ pch.h / pch.cpp
+  │   │
+  │   ├─ Core/                        # 엔진 기반 시스템
+  │   │   ├─ Application.h/cpp        # 앱 진입점, 메인 루프 관리
+  │   │   ├─ Timer.h/cpp              # 프레임 타이머 (delta time)
+  │   │   ├─ Window.h/cpp             # Win32 윈도우 관리
+  │   │   └─ Logger.h/cpp             # 디버그 로깅
+  │   │
+  │   ├─ Threading/                   # 멀티쓰레딩 (기획: Job System)
+  │   │   ├─ JobSystem.h/cpp          # Worker Thread Pool + Job Queue
+  │   │   ├─ Job.h                    # Job 인터페이스
+  │   │   └─ ThreadSafeQueue.h        # Lock-free 또는 Mutex 기반 큐
+  │   │
+  │   ├─ Graphics/                    # DX12 렌더링 코어
+  │   │   ├─ Device.h/cpp             # ID3D12Device, DXGI Factory
+  │   │   ├─ CommandQueue.h/cpp       # Command Queue / Allocator / List 관리
+  │   │   ├─ SwapChain.h/cpp          # 스왑체인
+  │   │   ├─ DescriptorHeap.h/cpp     # CBV/SRV/UAV/RTV/DSV 힙 관리
+  │   │   ├─ RootSignature.h/cpp      # Root Signature 빌더
+  │   │   ├─ PipelineState.h/cpp      # PSO 생성/관리
+  │   │   ├─ GPUBuffer.h/cpp          # Vertex/Index/Constant Buffer 래퍼
+  │   │   └─ Texture.h/cpp            # 텍스처 로드 및 리소스 관리
+  │   │
+  │   ├─ Renderer/                    # 렌더링 파이프라인 (기획: Multi-pass)
+  │   │   ├─ RenderManager.h/cpp      # 프레임 오케스트레이션
+  │   │   ├─ RenderPass.h             # Pass 인터페이스 (base class)
+  │   │   ├─ GeometryPass.h/cpp       # 기본 지오메트리 렌더링
+  │   │   ├─ PathTracingPass.h/cpp    # ★ Path Tracing (핵심 연구)
+  │   │   ├─ PostProcessPass.h/cpp    # Vignette / Blur / Film Grain
+  │   │   ├─ ToneMappingPass.h/cpp    # HDR → SDR 톤 매핑
+  │   │   └─ SpritePass.h/cpp         # 2D 스프라이트 렌더링 (몹)
+  │   │
+  │   ├─ PathTracing/                 # ★ 핵심 연구: 의도적 노이즈 분포
+  │   │   ├─ SampleDistributor.h/cpp  # 화면 위치 기반 샘플 수 제어
+  │   │   ├─ BlueNoiseSampler.h/cpp   # Blue Noise 텍스처 기반 샘플링
+  │   │   ├─ RadianceBuffer.h/cpp     # HDR Radiance 버퍼 (RGBA16F/32F)
+  │   │   └─ NoiseController.h/cpp    # 노이즈 패턴 파라미터 제어
+  │   │
+  │   ├─ PBR/                         # PBR 머티리얼 시스템
+  │   │   ├─ Material.h/cpp           # Albedo, Normal, Roughness, Metallic, AO
+  │   │   ├─ MaterialManager.h/cpp    # 머티리얼 캐시 및 관리
+  │   │   └─ LightManager.h/cpp       # 광원 관리 (Directional, Point, Spot)
+  │   │
+  │   ├─ Scene/                       # 씬 관리
+  │   │   ├─ Scene.h/cpp              # 씬 데이터 (오브젝트 리스트)
+  │   │   ├─ SceneManager.h/cpp       # 실외↔실내 씬 전환 관리
+  │   │   ├─ GameObject.h/cpp         # 게임 오브젝트 (트랜스폼 + 컴포넌트)
+  │   │   ├─ Camera.h/cpp             # 카메라 (뷰/프로젝션)
+  │   │   └─ Transform.h/cpp          # 위치/회전/스케일
+  │   │
+  │   ├─ Resource/                    # 리소스 로딩 (전용 스레드)
+  │   │   ├─ ResourceManager.h/cpp    # 리소스 캐싱 및 비동기 로드
+  │   │   ├─ MeshLoader.h/cpp         # Assimp 기반 메시 로드
+  │   │   └─ TextureLoader.h/cpp      # DDS/PNG 텍스처 로드
+  │   │
+  │   ├─ Audio/                       # 사운드 (전용 스레드)
+  │   │   └─ AudioManager.h/cpp       # FMOD 래핑
+  │   │
+  │   └─ Input/                       # 입력
+  │       └─ InputManager.h/cpp       # 키보드/마우스 입력 처리
+  │
+  ├─ Game/                            (Executable - Engine 참조)
+  │   ├─ main.cpp                     # WinMain 진입점
+  │   ├─ GameApp.h/cpp                # Application 상속, 게임 로직
+  │   ├─ Player.h/cpp                 # 플레이어 조작
+  │   ├─ Monster.h/cpp                # 스프라이트 기반 몬스터
+  │   ├─ NPC.h/cpp                    # NPC (기사단 동료 등)
+  │   ├─ SceneOutdoor.h/cpp           # 실외 씬 (이끼, 콘크리트, 식물)
+  │   ├─ SceneIndoor.h/cpp            # 실내 씬 (녹슨 철문, 형광등)
+  │   └─ SceneCinematic.h/cpp         # 시네마틱 전환 연출
+  │
+  ├─ Tools/                           (Executable - 에셋 변환기)
+  │   └─ AssetConverter.cpp           # Megascans → 엔진 포맷 변환
+  │
+  ├─ Shaders/                         # HLSL 셰이더
+  │   ├─ Common.hlsli                 # 공통 구조체/함수
+  │   ├─ PathTracing.hlsl             # ★ Ray Generation / Closest Hit / Miss
+  │   ├─ PBR_VS.hlsl                  # PBR 버텍스 셰이더
+  │   ├─ PBR_PS.hlsl                  # PBR 픽셀 셰이더
+  │   ├─ PostProcess.hlsl             # Vignette + Blur + Grain
+  │   ├─ ToneMapping.hlsl             # Tone Mapping (ACES 등)
+  │   ├─ Sprite_VS.hlsl               # 스프라이트 버텍스
+  │   └─ Sprite_PS.hlsl               # 스프라이트 픽셀
+  │
+  ├─ Assets/                          # 런타임 에셋
+  │   ├─ Meshes/                      # 3D 모델 (Megascans 등)
+  │   ├─ Textures/                    # PBR 텍스처 (Albedo, Normal, Roughness...)
+  │   │   ├─ Outdoor/
+  │   │   └─ Indoor/
+  │   ├─ Sprites/                     # 2D 몹 스프라이트
+  │   ├─ Audio/                       # 사운드/BGM
+  │   └─ BlueNoise/                   # Blue Noise 텍스처 (LUT)
+  │
+  ├─ ThirdParty/                      # 외부 라이브러리
+  │   ├─ FMOD/
+  │   ├─ Assimp/
+  │   └─ ImGui/
+  │
+  └─ Docs/                            # 문서
+
+  ---
+  핵심 설계 포인트
+
+  1. 렌더링 파이프라인 (중점과제 반영)
+
+  기획의 Multi-pass 구조를 그대로 반영합니다:
+
+  Frame Start
+    ├─ PathTracingPass  →  RadianceBuffer (HDR, RGBA16F)
+    │     └─ SampleDistributor: center=16, mid=4, edge=1
+    ├─ PostProcessPass  →  Vignette + Blur + Film Grain
+    ├─ ToneMappingPass  →  HDR → SDR
+    └─ Present (SwapChain)
+
+  PathTracing/ 폴더를 별도로 분리한 이유는 이것이 졸업 프로젝트의 연구 핵심이기 때문입니다. 샘플 분포 전략, Blue Noise,
+  노이즈 제어 로직이 독립적으로 발전할 수 있도록 격리합니다.
+
+  2. 멀티쓰레딩 (멀쓰+엔진 반영)
+
+  기획서의 현대 엔진 구조를 따릅니다:
+
+  Main Thread          │ Dedicated Threads      │ Worker Pool (JobSystem)
+  ─────────────────────│────────────────────────│─────────────────────────
+  Input                │ AudioManager           │ Physics Jobs
+  Game Logic           │ ResourceManager        │ Culling Jobs
+  Frame Orchestration  │   (비동기 로드)         │ Render Command Jobs
+  Scene Graph Update   │                        │ Animation Jobs
+
+  3. 씬 전환 (temp.md 반영)
+
+  SceneManager가 실외→실내→시네마틱 흐름을 관리합니다:
+
+  SceneOutdoor (이끼, 콘크리트, 식물)
+      ↓ transition
+  SceneIndoor (녹슨 철문, 형광등, 먼지 유리)
+      ↓ transition
+  SceneCinematic (PBR 효과 극대화 연출)
+
+  실외↔실내 전환 시 머티리얼의 Roughness/Metallic 차이가 PBR 효과를 극대화합니다.
+
+  4. 스프라이트 + 3D 혼합
+
+  SpritePass를 별도 렌더 패스로 분리하여, 3D PBR 환경 위에 2D 스프라이트 몹을 빌보드 방식으로 렌더링합니다. 아이의 상상
+  속 이야기라는 세계관과 자연스럽게 어울립니다.
+
+  ---
+  추천 개발 순서
+  ┌──────┬─────────────────────────────────────────────────────────────────────┐
+  │ 단계 │                                내용                                 │
+  ├──────┼─────────────────────────────────────────────────────────────────────┤
+  │  1   │ Core/ + Graphics/ — DX12 초기화, 삼각형 렌더링                      │
+  ├──────┼─────────────────────────────────────────────────────────────────────┤
+  │  2   │ Scene/ + PBR/ — 기본 PBR 파이프라인, 카메라/오브젝트                │
+  ├──────┼─────────────────────────────────────────────────────────────────────┤
+  │  3   │ Resource/ — Assimp 메시 로드, Megascans 텍스처 적용                 │
+  ├──────┼─────────────────────────────────────────────────────────────────────┤
+  │  4   │ PathTracing/ + Renderer/ — ★ Path Tracing + 노이즈 분포 (핵심 연구) │
+  ├──────┼─────────────────────────────────────────────────────────────────────┤
+  │  5   │ Renderer/PostProcess, ToneMapping — 후처리 효과                     │
+  ├──────┼─────────────────────────────────────────────────────────────────────┤
+  │  6   │ Threading/ — Job System 적용                                        │
+  ├──────┼─────────────────────────────────────────────────────────────────────┤
+  │  7   │ Audio/ + Input/ + Game/ — 게임플레이 완성                           │
+  └──────┴─────────────────────────────────────────────────────────────────────┘
+  이 구조에 대해 궁금한 점이나 수정하고 싶은 부분이 있으면 말씀해주세요.

@@ -7,6 +7,39 @@
 #ifndef PCH_H
 #define PCH_H
 
+#include <string>
+#include <wrl.h>
+#include <shellapi.h>
+
+#include <d3d12.h>
+#include <dxgi1_6.h>
+
+//GPT추천 -------------------
+#include <d3d12shader.h>
+#include <d3d12sdklayers.h>
+#include <dxcapi.h>
+//---------------------------
+
+#include <d3dcompiler.h>
+
+#include <DirectXMath.h>
+#include <DirectXPackedVector.h>
+#include <DirectXColors.h>
+#include <DirectXCollision.h>
+
+#include <DXGIDebug.h>
+
+using namespace DirectX;
+using namespace DirectX::PackedVector;
+
+using Microsoft::WRL::ComPtr;
+
+
+#pragma comment(lib, "d3dcompiler.lib")
+#pragma comment(lib, "d3d12.lib")
+#pragma comment(lib, "dxgi.lib")
+
+#pragma comment(lib, "dxguid.lib")
 // 여기에 미리 컴파일하려는 헤더 추가
 #include "framework.h"
 

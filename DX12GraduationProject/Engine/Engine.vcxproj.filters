@@ -13,6 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="소스 파일\core">
+      <UniqueIdentifier>{1a7b63a1-6dd8-41eb-b343-f6194b9aa118}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\core\Timer">
+      <UniqueIdentifier>{15c6c626-2e02-464a-a4e7-1236136a3f96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\core\Window">
+      <UniqueIdentifier>{d1f157ef-a08d-424b-9ff2-8598c113e610}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\core\Application">
+      <UniqueIdentifier>{3601dcce-a6bf-40c0-8a44-c099b7c50d70}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -21,6 +33,15 @@
     <ClInclude Include="pch.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>소스 파일\core\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>소스 파일\core\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>소스 파일\core\Application</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -28,6 +49,15 @@
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>소스 파일\core\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>소스 파일\core\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>소스 파일\core\Application</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

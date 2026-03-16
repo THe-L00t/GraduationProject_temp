@@ -25,6 +25,12 @@
     <Filter Include="소스 파일\core\Application">
       <UniqueIdentifier>{3601dcce-a6bf-40c0-8a44-c099b7c50d70}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Graphics">
+      <UniqueIdentifier>{ad555e75-7c42-45d3-ad43-f8c355740fb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Graphics\Device">
+      <UniqueIdentifier>{0ded9b07-1f25-4990-90e6-35a307b5a5cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -42,6 +48,9 @@
     <ClInclude Include="Application.h">
       <Filter>소스 파일\core\Application</Filter>
     </ClInclude>
+    <ClInclude Include="Device.h">
+      <Filter>소스 파일\Graphics\Device</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -58,6 +67,9 @@
     </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>소스 파일\core\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Device.cpp">
+      <Filter>소스 파일\Graphics\Device</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

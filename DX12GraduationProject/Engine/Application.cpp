@@ -24,3 +24,18 @@ void Application::Run()
     OnDestroy();
     DestroyInternal();
 }
+
+void Application::InitInternal()
+{
+    window = std::make_unique<Window>();
+    window->Initialize(GetModuleHandle(nullptr), 1280, 730, L"DX12 Engine");
+
+    timer = std::make_unique<Timer>();
+    timer->Reset();
+}
+
+void Application::DestroyInternal()
+{
+    window->Destroy();
+}
+

@@ -31,6 +31,12 @@
     <Filter Include="소스 파일\Graphics\Device">
       <UniqueIdentifier>{0ded9b07-1f25-4990-90e6-35a307b5a5cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Graphics\CommandQueue">
+      <UniqueIdentifier>{f4ae0e78-7370-46f7-aad8-b7deba58bcc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Graphics\SwapChain">
+      <UniqueIdentifier>{6b899fe3-5bc6-4558-bad2-34ea9fefe4e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -51,6 +57,15 @@
     <ClInclude Include="Device.h">
       <Filter>소스 파일\Graphics\Device</Filter>
     </ClInclude>
+    <ClInclude Include="Fence.h">
+      <Filter>소스 파일\Graphics\CommandQueue</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandQueue.h">
+      <Filter>소스 파일\Graphics\CommandQueue</Filter>
+    </ClInclude>
+    <ClInclude Include="SwapChain.h">
+      <Filter>소스 파일\Graphics\SwapChain</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -70,6 +85,15 @@
     </ClCompile>
     <ClCompile Include="Device.cpp">
       <Filter>소스 파일\Graphics\Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Fence.cpp">
+      <Filter>소스 파일\Graphics\CommandQueue</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandQueue.cpp">
+      <Filter>소스 파일\Graphics\CommandQueue</Filter>
+    </ClCompile>
+    <ClCompile Include="SwapChain.cpp">
+      <Filter>소스 파일\Graphics\SwapChain</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

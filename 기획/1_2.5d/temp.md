@@ -53,3 +53,4 @@ https://toolkit.artlist.io/voice-over-generator?mode=text-to-speech&modelGroupID
 
 아이가 상상안 이야기라는 느낌. 아빠가 말이 안된다고 지적하지만, 일단 들어봐! 하는 어린 딸. 
 현대 세계로 떨어진 딸 상상속의 떠돌이 기사단. 아끼던 동료를 구하기 위해 실내로 입성, 다른 따라온 몬스터와 싸우고 실내에서 탈출. 
+
